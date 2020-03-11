@@ -151,11 +151,12 @@ Here are expected results for ELECTRA on various tasks. Note that variance in fi
 | ELECTRA-Small | 57.0 | 91.2 | 88.0 |  87.5 | 89.0  | 81.3 | 88.4 | 66.7 | 75.8 | 70.1 |  96.5 |
 | ELECTRA-Small-OWT | 56.8 | 88.3 | 87.4 |  86.8 | 88.3  | 78.9 | 87.9 | 68.5 | -- | -- |  -- |
 
+See [here](https://github.com/google-research/electra/issues/3) for losses / training curves of the models during pre-training.
 
 ## Citation
 If you use this code for your publication, please cite the original paper:
 ```
-@inproceedings{clark2019electra,
+@inproceedings{clark2020electra,
   title = {{ELECTRA}: Pre-training Text Encoders as Discriminators Rather Than Generators},
   author = {Kevin Clark and Minh-Thang Luong and and Quoc V. Le and Christopher D. Manning},
   booktitle = {ICLR},
