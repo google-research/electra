@@ -323,8 +323,7 @@ def train_or_eval(config: configure_pretraining.PretrainingConfig):
       iterations_per_loop=config.iterations_per_loop,
       num_shards=(config.num_tpu_cores if config.do_train else
                   config.num_tpu_cores),
-      tpu_job_name=("train_tpu_worker" if config.do_train else
-                    "lm_eval_tpu_worker"),
+      tpu_job_name=config.tpu_job_name,
       per_host_input_for_training=is_per_host)
   run_config = tf.estimator.tpu.RunConfig(
       cluster=tpu_cluster_resolver,
