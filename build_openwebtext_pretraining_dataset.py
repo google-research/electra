@@ -43,7 +43,8 @@ def write_examples(job_id, args):
       output_dir=os.path.join(args.data_dir, "pretrain_tfrecords"),
       max_seq_length=args.max_seq_length,
       num_jobs=args.num_processes,
-      blanks_separate_docs=False
+      blanks_separate_docs=False,
+      do_lower_case=args.do_lower_case
   )
   log("Writing tf examples")
   fnames = sorted(tf.io.gfile.listdir(owt_dir))
@@ -78,6 +79,11 @@ def main():
                       help="Number of tokens per example.")
   parser.add_argument("--num-processes", default=1, type=int,
                       help="Parallelize across multiple processes.")
+  parser.add_argument("--do-lower-case", dest='do_lower_case',
+                      action='store_true', help="Lower case input text.")
+  parser.add_argument("--no-lower-case", dest='do_lower_case',
+                      action='store_false', help="Don't lower case input text.")
+  parser.set_defaults(do_lower_case=True)
   args = parser.parse_args()
 
   utils.rmkdir(os.path.join(args.data_dir, "pretrain_tfrecords"))

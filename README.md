@@ -39,7 +39,9 @@ Use `build_pretraining_dataset.py` to create a pre-training dataset from a dump 
 * `--vocab-file`: File defining the wordpiece vocabulary.
 * `--output-dir`: Where to write out ELECTRA examples.
 * `--max-seq-length`: The number of tokens per example (128 by default).
-* `--num-processes`: If >1 parallelize across multiple processes (1 by default)
+* `--num-processes`: If >1 parallelize across multiple processes (1 by default).
+* `--blanks-separate-docs`: Whether blank lines indicate document boundaries (True by default).
+* `--do-lower-case/--no-lower-case`: Whether to lower case the input text (True by default).
 
 Use `run_pretraining.py` to pre-train an ELECTRA model. It has the following arguments:
 
@@ -158,7 +160,7 @@ If you use this code for your publication, please cite the original paper:
 ```
 @inproceedings{clark2020electra,
   title = {{ELECTRA}: Pre-training Text Encoders as Discriminators Rather Than Generators},
-  author = {Kevin Clark and Minh-Thang Luong and and Quoc V. Le and Christopher D. Manning},
+  author = {Kevin Clark and Minh-Thang Luong and Quoc V. Le and Christopher D. Manning},
   booktitle = {ICLR},
   year = {2020}
 }
