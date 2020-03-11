@@ -118,11 +118,12 @@ class ExampleWriter(object):
   """Writes pre-training examples to disk."""
 
   def __init__(self, job_id, vocab_file, output_dir, max_seq_length,
-               num_jobs, blanks_separate_docs, num_out_files=1000):
+               num_jobs, blanks_separate_docs, do_lower_case,
+               num_out_files=1000):
     self._blanks_separate_docs = blanks_separate_docs
     tokenizer = tokenization.FullTokenizer(
         vocab_file=vocab_file,
-        do_lower_case=True)
+        do_lower_case=do_lower_case)
     self._example_builder = ExampleBuilder(tokenizer, max_seq_length)
     self._writers = []
     for i in range(num_out_files):
@@ -169,7 +170,8 @@ def write_examples(job_id, args):
       output_dir=args.output_dir,
       max_seq_length=args.max_seq_length,
       num_jobs=args.num_processes,
-      blanks_separate_docs=args.blanks_separate_docs
+      blanks_separate_docs=args.blanks_separate_docs,
+      do_lower_case=args.do_lower_case
   )
   log("Writing tf examples")
   fnames = sorted(tf.io.gfile.listdir(args.corpus_dir))
@@ -204,6 +206,11 @@ def main():
                       help="Parallelize across multiple processes.")
   parser.add_argument("--blanks-separate-docs", default=True, type=bool,
                       help="Whether blank lines indicate document boundaries.")
+  parser.add_argument("--do-lower-case", dest='do_lower_case',
+                      action='store_true', help="Lower case input text.")
+  parser.add_argument("--no-lower-case", dest='do_lower_case',
+                      action='store_false', help="Don't lower case input text.")
+  parser.set_defaults(do_lower_case=True)
   args = parser.parse_args()
 
   utils.rmkdir(args.output_dir)
