@@ -14,7 +14,7 @@ This repository contains code to pre-train ELECTRA, including small ELECTRA mode
 
 We are initially releasing three pre-trained models:
 
-| Model | Layers | Hidden Size | Params | GLUE score | Download |
+| Model | Layers | Hidden Size | Params | GLUE score (test set) | Download |
 | --- | --- | --- | --- | ---  | --- |
 | ELECTRA-Small | 12 | 256 | 14M | 77.4  | [link](https://storage.googleapis.com/electra-data/electra_small.zip) |
 | ELECTRA-Base | 12 | 768 | 110M | 82.7 | [link](https://storage.googleapis.com/electra-data/electra_base.zip) |
@@ -88,7 +88,7 @@ Use `run_finetuning.py` to fine-tune and evaluate an ELECTRA model on a downstre
 *  `--model-name`: a name of the pre-trained model: the pre-trained weights should exist in `data-dir/models/model-name`.
 * `--hparams`: a JSON dict containing model hyperparameters, data paths, etc. (e.g., `--hparams '{"task_names": ["rte"], "model_size": "base", "learning_rate": 1e-4, ...}'`). See `configure_pretraining.py` for the supported hyperparameters.  Instead of a dict, this can also be a path to a `.json` file containing the hyperparameters. You must specify the `"task_names"` and `"model_size"` (see examples below).
 
-By default eval metrics will be saved in `data-dir/model-name/results` and model weights will be saved in `data-dir/model-name/finetuning_models`. To customize the training, add `--hparams '{"hparam1": value1, "hparam2": value2, ...}'` to the run command. Some particularly useful options:
+Eval metrics will be saved in `data-dir/model-name/results` and model weights will be saved in `data-dir/model-name/finetuning_models` by default. Evaluation is done on the dev set by default. To customize the training, add `--hparams '{"hparam1": value1, "hparam2": value2, ...}'` to the run command. Some particularly useful options:
 
 * `"debug": true` fine-tunes a tiny ELECTRA model for a few steps.
 * `"task_names": ["task_name"]`: specifies the tasks to train on. A list because the codebase nominally supports multi-task learning, (although be warned this has not been thoroughly tested).
@@ -143,7 +143,7 @@ For preprocessing data, we use the same tokenizer as [BERT](https://github.com/g
 
 
 ## Expected Results
-Here are expected results for ELECTRA on various tasks. Note that variance in fine-tuning can be [quite large](https://arxiv.org/abs/2002.06305), so for some tasks you may see big fluctuations in scores when fine-tuning from the same checkpoint multiple times. The below scores show median performance over a large number of random seeds.  ELECTRA-Small/Base/Large are our released models. ELECTRA-Small-OWT is the OpenWebText-trained model from above (it performs a bit worse than ELECTRA-Small due to being trained for less time and on a smaller dataset).
+Here are expected results for ELECTRA on various tasks (test set for chunking, dev set for the other tasks). Note that variance in fine-tuning can be [quite large](https://arxiv.org/abs/2002.06305), so for some tasks you may see big fluctuations in scores when fine-tuning from the same checkpoint multiple times. The below scores show median performance over a large number of random seeds.  ELECTRA-Small/Base/Large are our released models. ELECTRA-Small-OWT is the OpenWebText-trained model from above (it performs a bit worse than ELECTRA-Small due to being trained for less time and on a smaller dataset).
 
 |  | CoLA | SST | MRPC | STS  | QQP  | MNLI | QNLI | RTE | SQuAD 1.1 | SQuAD 2.0 | Chunking |
 | --- | --- | --- | --- | ---  | ---  | --- | --- | --- | ---| ---| --- |
