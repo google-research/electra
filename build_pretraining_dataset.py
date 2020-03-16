@@ -69,9 +69,9 @@ class ExampleBuilder(object):
       # the sentence goes to the first segment if (1) the first segment is
       # empty, (2) the sentence doesn't put the first segment over length or
       # (3) 50% of the time when it does put the first segment over length
-      if (first_segment or
+      if (len(first_segment) == 0 or
           len(first_segment) + len(sentence) < first_segment_target_length or
-          (second_segment and
+          (len(second_segment) == 0 and
            len(first_segment) < first_segment_target_length and
            random.random() < 0.5)):
         first_segment += sentence
