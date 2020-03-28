@@ -22,8 +22,8 @@ from __future__ import print_function
 import collections
 import unicodedata
 import six
-import tensorflow.compat.v1 as tf
-
+import re
+import tensorflow as tf
 
 
 def convert_to_unicode(text):
@@ -73,7 +73,7 @@ def load_vocab(vocab_file):
   """Loads a vocabulary file into a dictionary."""
   vocab = collections.OrderedDict()
   index = 0
-  with tf.io.gfile.GFile(vocab_file, "r") as reader:
+  with tf.gfile.GFile(vocab_file, "r") as reader:
     while True:
       token = convert_to_unicode(reader.readline())
       if not token:
@@ -138,7 +138,6 @@ class BasicTokenizer(object):
 
   def __init__(self, do_lower_case=True):
     """Constructs a BasicTokenizer.
-
     Args:
       do_lower_case: Whether to lower case the input.
     """
@@ -170,6 +169,19 @@ class BasicTokenizer(object):
 
   def _run_strip_accents(self, text):
     """Strips accents from a piece of text."""
+
+    # Skip using _run_strip_accents() for Korean substrings, since normalizing
+    # Korean characters with NFD and joining them back results in a seemingly
+    # same but different text, which causes a bug.
+    to_char = chr if six.PY3 else unichr
+    korean = "%s-%s%s-%s" % (to_char(0xac00), to_char(0xd7a3),
+                             to_char(0x3131), to_char(0x3163))
+    if re.search("[%s]+" % korean, text):
+      return "".join(
+          substr if re.search("^[%s]+$" % korean, substr)
+          else self._run_strip_accents(substr)
+          for substr in re.findall("[%s]+|[^%s]+" % (korean, korean), text))
+
     text = unicodedata.normalize("NFD", text)
     output = []
     for char in text:
@@ -258,18 +270,14 @@ class WordpieceTokenizer(object):
 
   def tokenize(self, text):
     """Tokenizes a piece of text into its word pieces.
-
     This uses a greedy longest-match-first algorithm to perform tokenization
     using the given vocabulary.
-
     For example:
       input = "unaffable"
       output = ["un", "##aff", "##able"]
-
     Args:
       text: A single token or whitespace separated tokens. This should have
         already been passed through `BasicTokenizer.
-
     Returns:
       A list of wordpiece tokens.
     """
