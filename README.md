@@ -155,7 +155,7 @@ Here are expected results for ELECTRA on various tasks (test set for chunking, d
 | --- | --- | --- | --- | ---  | ---  | --- | --- | --- | ---| ---| --- |
 | Metrics | MCC | Acc | Acc | Spearman  | Acc  | Acc | Acc | Acc | EM | EM | F1 |
 | ELECTRA-Large| 69.1 | 96.9 | 90.8 | 92.6 | 92.4 | 90.9 | 95.0 | 88.0 | 89.7 | 88.1 | 97.2 |
-| ELECTRA-Base | 67.7 | 95.1 | 89.5 | 91.2 | 91.5  | 88.8  | 93.2 | 82.7 | 86.8 | 83.7| 97.1 |
+| ELECTRA-Base | 67.7 | 95.1 | 89.5 | 91.2 | 91.5  | 88.8  | 93.2 | 82.7 | 86.8 | 80.5 | 97.1 |
 | ELECTRA-Small | 57.0 | 91.2 | 88.0 |  87.5 | 89.0  | 81.3 | 88.4 | 66.7 | 75.8 | 70.1 |  96.5 |
 | ELECTRA-Small-OWT | 56.8 | 88.3 | 87.4 |  86.8 | 88.3  | 78.9 | 87.9 | 68.5 | -- | -- |  -- |
 
