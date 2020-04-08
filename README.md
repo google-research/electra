@@ -20,7 +20,7 @@ We are initially releasing three pre-trained models:
 | ELECTRA-Base | 12 | 768 | 110M | 82.7 | [link](https://storage.googleapis.com/electra-data/electra_base.zip) |
 | ELECTRA-Large | 24 | 1024 | 335M |  85.2 | [link](https://storage.googleapis.com/electra-data/electra_large.zip) |
 
-The models were trained on uncased English text. They correspond to ELECTRA-Small++, ELECTRA-Base++, ELECTRA-1.45M  in our paper. We hope to release other models, such as multilingual models, in the future.
+The models were trained on uncased English text. They correspond to ELECTRA-Small++, ELECTRA-Base++, ELECTRA-1.75M  in our paper. We hope to release other models, such as multilingual models, in the future.
 
 On [GLUE](https://gluebenchmark.com/), ELECTRA-Large scores slightly better than ALBERT/XLNET, ELECTRA-Base scores better than BERT-Large, and ELECTRA-Small scores slightly worst than [TinyBERT](https://arxiv.org/abs/1909.10351) (but uses no distillation). See the expected results section below for detailed performance numbers.
 
@@ -168,7 +168,8 @@ If you use this code for your publication, please cite the original paper:
   title = {{ELECTRA}: Pre-training Text Encoders as Discriminators Rather Than Generators},
   author = {Kevin Clark and Minh-Thang Luong and Quoc V. Le and Christopher D. Manning},
   booktitle = {ICLR},
-  year = {2020}
+  year = {2020},
+  url = {https://openreview.net/pdf?id=r1xMH1BtvB}
 }
 ```
 
