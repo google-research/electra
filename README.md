@@ -127,7 +127,7 @@ The code supports [SQuAD](https://rajpurkar.github.io/SQuAD-explorer/) 1.1 and 2
 
 * **Squad 1.1**: Download the [train](https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v1.1.json) and [dev](https://rajpurkar.github.io/SQuAD-explorer/dataset/dev-v1.1.json) datasets and move them under `$DATA_DIR/finetuning_data/squadv1/(train|dev).json`
 * **Squad 2.0**: Download the datasets from the [SQuAD Website](https://rajpurkar.github.io/SQuAD-explorer/) and move them under `$DATA_DIR/finetuning_data/squad/(train|dev).json`
-* **MRQA tasks**: Download the data from [here](https://github.com/mrqa/MRQA-Shared-Task-2019#datasets). Move the data to `$DATA_DIR/(newsqa|naturalqs|triviaqa|searchqa)/(train|dev).jsonl`.
+* **MRQA tasks**: Download the data from [here](https://github.com/mrqa/MRQA-Shared-Task-2019#datasets). Move the data to `$DATA_DIR/finetuning_data/(newsqa|naturalqs|triviaqa|searchqa)/(train|dev).jsonl`.
 
 Then run (for example)
 ```
