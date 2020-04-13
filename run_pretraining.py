@@ -309,7 +309,7 @@ def train_or_eval(config: configure_pretraining.PretrainingConfig):
   """Run pre-training or evaluate the pre-trained model."""
   if config.do_train == config.do_eval:
     raise ValueError("Exactly one of `do_train` or `do_eval` must be True.")
-  if config.debug:
+  if config.debug and config.do_train:
     utils.rmkdir(config.model_dir)
   utils.heading("Config:")
   utils.log_config(config)

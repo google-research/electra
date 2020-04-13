@@ -138,7 +138,7 @@ This repository uses the official evaluation code released by the [SQuAD](https:
 
 ### Finetune ELECTRA on sequence tagging
 
-Download the CoNLL-2000 text chunking dataset from [here](https://www.clips.uantwerpen.be/conll2000/chunking/) and put it under `$DATA_DIR/chunk/(train|dev).txt`. Then run
+Download the CoNLL-2000 text chunking dataset from [here](https://www.clips.uantwerpen.be/conll2000/chunking/) and put it under `$DATA_DIR/finetuning_data/chunk/(train|dev).txt`. Then run
 ```
 python3 run_finetuning.py --data-dir $DATA_DIR --model-name electra_base --hparams '{"model_size": "base", "task_names": ["chunk"]}'
 ```
