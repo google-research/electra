@@ -328,6 +328,7 @@ def train_or_eval(config: configure_pretraining.PretrainingConfig):
       cluster=tpu_cluster_resolver,
       model_dir=config.model_dir,
       save_checkpoints_steps=config.save_checkpoints_steps,
+      keep_checkpoint_max=config.keep_checkpoint_max,
       tpu_config=tpu_config)
   model_fn = model_fn_builder(config=config)
   estimator = tf.estimator.tpu.TPUEstimator(
