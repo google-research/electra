@@ -128,6 +128,7 @@ class FinetuningConfig(object):
         "{:}_{:}_{:}_predictions.pkl").format
 
     # update defaults with passed-in hyperparameters
+    self.tasks = {}
     self.update(kwargs)
 
     # default hyperparameters for single-task models

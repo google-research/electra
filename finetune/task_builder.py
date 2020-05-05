@@ -66,5 +66,12 @@ def get_task(config: configure_finetuning.FinetuningConfig, task_name,
     return qa_tasks.SearchQA(config, tokenizer)
   elif task_name == "chunk":
     return tagging_tasks.Chunking(config, tokenizer)
+  elif (task_name in config.tasks):
+    if config.tasks[task_name]["type"] == "classification":
+      return classification_tasks.StandardTSV(config, task_name,
+                                              config.tasks[task_name],
+                                              tokenizer)
+    else:
+      raise ValueError("Unknown task type: " + config.tasks[task_name]["type"])
   else:
     raise ValueError("Unknown task " + task_name)
