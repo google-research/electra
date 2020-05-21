@@ -372,7 +372,7 @@ def dropout(input_tensor, dropout_prob):
   if dropout_prob is None or dropout_prob == 0.0:
     return input_tensor
 
-  output = tf.nn.dropout(input_tensor, dropout_prob)
+  output = tf.nn.dropout(input_tensor, rate=dropout_prob)
   return output
 
 
