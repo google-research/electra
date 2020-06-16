@@ -52,10 +52,9 @@ Use `run_pretraining.py` to pre-train an ELECTRA model. It has the following arg
 If training is halted, re-running the `run_pretraining.py` with the same arguments will continue the training where it left off.
 
 You can continue pre-training from the released ELECTRA checkpoints by
-1. Setting the model-name to point to a downloaded model (e.g., `--model-name electra_small` if you downloaded weights to `$DATA_DIR/electra_small`).
-2. Setting `num_train_steps` by (for example) adding `"num_train_steps": 4010000` to the `--hparams`. This will continue training the small model for 10000 more steps (it has already been trained for 4e6 steps).
-3. Increase the learning rate to account for the linear learning rate decay. For example, to start with a learning rate of 2e-4 you should set the `learning_rate` hparam to 2e-4 * (4e6 + 10000) / 10000.
-4. For ELECTRA-Small, you also need to specifiy `"generator_hidden_size": 1.0` in the `hparams` because we did not use a small generator for that model.
+1. Setting the model-name to point to a downloaded model (e.g., `--model-name electra_small`).
+2. Specify an initial checkpoint (usually from a released ELECTRA checkpoint, e.g., `--init_checkpoint pretrained_models_dir/electra_small`)
+3. For ELECTRA-Small, you also need to specifiy `"generator_hidden_size": 1.0` in the `hparams` because we did not use a small generator for that model.
 
 ##  Quickstart: Pre-train a small ELECTRA model.
 These instructions pre-train a small ELECTRA model (12 layers, 256 hidden size). Unfortunately, the data we used in the paper is not publicly available, so we will use the [OpenWebTextCorpus](https://skylion007.github.io/OpenWebTextCorpus/) released by Aaron Gokaslan and Vanya Cohen instead. The fully-trained model (~4 days on a v100 GPU) should perform roughly in between [GPT](https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf) and BERT-Base in terms of GLUE performance. By default the model is trained on length-128 sequences, so it is not suitable for running on question answering. See the "expected results" section below for more details on model performance.
