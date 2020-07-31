@@ -164,7 +164,7 @@ class BasicTokenizer(object):
     for token in orig_tokens:
       if self.do_lower_case:
         token = token.lower()
-        if strip_accents:
+        if self.strip_accents:
             token = self._run_strip_accents(token)
       split_tokens.extend(self._run_split_on_punc(token))
 
