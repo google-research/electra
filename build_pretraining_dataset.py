@@ -119,11 +119,12 @@ class ExampleWriter(object):
 
   def __init__(self, job_id, vocab_file, output_dir, max_seq_length,
                num_jobs, blanks_separate_docs, do_lower_case,
-               num_out_files=1000):
+               num_out_files=1000, strip_accents):
     self._blanks_separate_docs = blanks_separate_docs
     tokenizer = tokenization.FullTokenizer(
         vocab_file=vocab_file,
-        do_lower_case=do_lower_case)
+        do_lower_case=do_lower_case,
+        strip_accents=strip_accents)
     self._example_builder = ExampleBuilder(tokenizer, max_seq_length)
     self._writers = []
     for i in range(num_out_files):
@@ -171,7 +172,8 @@ def write_examples(job_id, args):
       max_seq_length=args.max_seq_length,
       num_jobs=args.num_processes,
       blanks_separate_docs=args.blanks_separate_docs,
-      do_lower_case=args.do_lower_case
+      do_lower_case=args.do_lower_case,
+      strip_accents=args.strip_accents,
   )
   log("Writing tf examples")
   fnames = sorted(tf.io.gfile.listdir(args.corpus_dir))
@@ -210,7 +212,12 @@ def main():
                       action='store_true', help="Lower case input text.")
   parser.add_argument("--no-lower-case", dest='do_lower_case',
                       action='store_false', help="Don't lower case input text.")
+  parser.add_argument("--strip_accents", dest='strip_accents',
+                      action='store_true', help="Strip accents.")
+  parser.add_argument("--no-strip_accents", dest='strip_accents',
+                      action='store_false', help="Don't strip accents.")  
   parser.set_defaults(do_lower_case=True)
+  parser.set_defaults(strip_accents=True)
   args = parser.parse_args()
 
   utils.rmkdir(args.output_dir)
