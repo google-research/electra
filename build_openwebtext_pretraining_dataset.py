@@ -44,7 +44,8 @@ def write_examples(job_id, args):
       max_seq_length=args.max_seq_length,
       num_jobs=args.num_processes,
       blanks_separate_docs=False,
-      do_lower_case=args.do_lower_case
+      do_lower_case=args.do_lower_case,
+      strip_accents=args.strip_accents,
   )
   log("Writing tf examples")
   fnames = sorted(tf.io.gfile.listdir(owt_dir))
@@ -79,11 +80,23 @@ def main():
                       help="Number of tokens per example.")
   parser.add_argument("--num-processes", default=1, type=int,
                       help="Parallelize across multiple processes.")
+
+  # toggle lower-case
   parser.add_argument("--do-lower-case", dest='do_lower_case',
                       action='store_true', help="Lower case input text.")
   parser.add_argument("--no-lower-case", dest='do_lower_case',
                       action='store_false', help="Don't lower case input text.")
+
+  # toggle strip-accents
+  parser.add_argument("--do-strip-accents", dest='strip_accents',
+                      action='store_true', help="Strip accents.")
+  parser.add_argument("--no-strip-accents", dest='strip_accents',
+                      action='store_false', help="Don't strip accents.")
+
+  # set defaults for toggles
   parser.set_defaults(do_lower_case=True)
+  parser.set_defaults(strip_accents=True)
+
   args = parser.parse_args()
 
   utils.rmkdir(os.path.join(args.data_dir, "pretrain_tfrecords"))
