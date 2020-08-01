@@ -212,9 +212,9 @@ def main():
                       action='store_true', help="Lower case input text.")
   parser.add_argument("--no-lower-case", dest='do_lower_case',
                       action='store_false', help="Don't lower case input text.")
-  parser.add_argument("--do-strip_accents", dest='strip_accents',
+  parser.add_argument("--do-strip-accents", dest='strip_accents',
                       action='store_true', help="Strip accents.")
-  parser.add_argument("--no-strip_accents", dest='strip_accents',
+  parser.add_argument("--no-strip-accents", dest='strip_accents',
                       action='store_false', help="Don't strip accents.")  
   parser.set_defaults(do_lower_case=True)
   parser.set_defaults(strip_accents=True)
