@@ -113,6 +113,13 @@ class FullTokenizer(object):
   """Runs end-to-end tokenziation."""
 
   def __init__(self, vocab_file, do_lower_case=True, strip_accents=True):
+    """Constructs a FullTokenizer.
+
+    Args:
+      vocab_file: The vocabulary file.
+      do_lower_case: Whether to lower case the input.
+      strip_accents: Whether to strip the accents.
+    """
     self.vocab = load_vocab(vocab_file)
     self.inv_vocab = {v: k for k, v in self.vocab.items()}
     self.basic_tokenizer = BasicTokenizer(do_lower_case=do_lower_case, strip_accents=strip_accents)
