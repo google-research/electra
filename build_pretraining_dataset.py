@@ -217,7 +217,7 @@ def main():
 
   # toggle strip-accents
   parser.add_argument("--do-strip-accents", dest='strip_accents',
-                      action='store_true', help="Strip accents.")
+                      action='store_true', help="Strip accents (default).")
   parser.add_argument("--no-strip-accents", dest='strip_accents',
                       action='store_false', help="Don't strip accents.")
 
