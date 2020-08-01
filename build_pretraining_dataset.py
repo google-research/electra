@@ -209,7 +209,7 @@ def main():
   parser.add_argument("--blanks-separate-docs", default=True, type=bool,
                       help="Whether blank lines indicate document boundaries.")
 
-  # toggle lower-case                    
+  # toggle lower-case
   parser.add_argument("--do-lower-case", dest='do_lower_case',
                       action='store_true', help="Lower case input text.")
   parser.add_argument("--no-lower-case", dest='do_lower_case',
