@@ -73,7 +73,7 @@ class F1Scorer(SentenceLevelScorer):
     n_correct, n_predicted, n_gold = 0, 0, 0
     for y_true, pred in zip(self._true_labels, self._preds):
       if y_true >= self._positive_label:
-        n_gold += 1 
+        n_gold += 1
       if pred >= self._positive_label:
         n_predicted += 1
         if pred == y_true:
