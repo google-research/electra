@@ -146,7 +146,9 @@ class BertModel(object):
                input_embeddings=None,
                input_reprs=None,
                update_embeddings=True,
-               untied_embeddings=False):
+               untied_embeddings=False,
+               ltr=False,
+               rtl=False):
     """Constructor for BertModel.
 
     Args:
@@ -231,6 +233,16 @@ class BertModel(object):
         # for the attention scores.
         attention_mask = create_attention_mask_from_input_mask(
             token_type_ids, input_mask)
+
+        # Add causal masking to the attention for running the transformer
+        # left-to-right or right-to-left
+        if ltr or rtl:
+          causal_mask = tf.ones((seq_length, seq_length))
+          if ltr:
+            causal_mask = tf.matrix_band_part(causal_mask, -1, 0)
+          else:
+            causal_mask = tf.matrix_band_part(causal_mask, 0, -1)
+          attention_mask *= tf.expand_dims(causal_mask, 0)
 
         # Run the stacked transformer. Output shapes
         # sequence_output: [batch_size, seq_length, hidden_size]

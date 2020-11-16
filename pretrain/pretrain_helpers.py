@@ -115,9 +115,23 @@ def scatter_update(sequence, updates, positions):
   return updated_sequence, updates_mask
 
 
-def _get_candidates_mask(inputs: pretrain_data.Inputs, vocab,
-                         disallow_from_mask=None):
+VOCAB_MAPPING = {}
+
+
+def get_vocab(config: configure_pretraining.PretrainingConfig):
+  """Memoized load of the vocab file."""
+  if config.vocab_file not in VOCAB_MAPPING:
+    vocab = tokenization.FullTokenizer(
+        config.vocab_file, do_lower_case=True).vocab
+    VOCAB_MAPPING[config.vocab_file] = vocab
+  return VOCAB_MAPPING[config.vocab_file]
+
+
+def get_candidates_mask(config: configure_pretraining.PretrainingConfig,
+                        inputs: pretrain_data.Inputs,
+                        disallow_from_mask=None):
   """Returns a mask tensor of positions in the input that can be masked out."""
+  vocab = get_vocab(config)
   ignore_ids = [vocab["[SEP]"], vocab["[CLS]"], vocab["[MASK]"]]
   candidates_mask = tf.ones_like(inputs.input_ids, tf.bool)
   for ignore_id in ignore_ids:
@@ -152,9 +166,8 @@ def mask(config: configure_pretraining.PretrainingConfig,
   B, L = modeling.get_shape_list(inputs.input_ids)
 
   # Find indices where masking out a token is allowed
-  vocab = tokenization.FullTokenizer(
-      config.vocab_file, do_lower_case=config.do_lower_case).vocab
-  candidates_mask = _get_candidates_mask(inputs, vocab, disallow_from_mask)
+  vocab = get_vocab(config)
+  candidates_mask = get_candidates_mask(config, inputs, disallow_from_mask)
 
   # Set the number of tokens to mask out per example
   num_tokens = tf.cast(tf.reduce_sum(inputs.input_mask, -1), tf.float32)

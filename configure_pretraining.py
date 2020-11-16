@@ -32,7 +32,9 @@ class PretrainingConfig(object):
     self.do_eval = False  # evaluate generator/discriminator on unlabeled data
 
     # loss functions
-    self.electra_objective = True  # if False, use the BERT objective instead
+    # train ELECTRA or Electric? if both are false, trains a masked LM like BERT
+    self.electra_objective = True
+    self.electric_objective = False
     self.gen_weight = 1.0  # masked language modeling / generator loss
     self.disc_weight = 50.0  # discriminator loss
     self.mask_prob = 0.15  # percent of input tokens to mask out / replace
@@ -65,6 +67,7 @@ class PretrainingConfig(object):
 
     # generator settings
     self.uniform_generator = False  # generator is uniform at random
+    self.two_tower_generator = False  # generator is a two-tower cloze model
     self.untied_generator_embeddings = False  # tie generator/discriminator
                                               # token embeddings?
     self.untied_generator = True  # tie all generator/discriminator weights?
@@ -127,6 +130,8 @@ class PretrainingConfig(object):
     #     self.embedding_size = 1024
     #     self.mask_prob = 0.25
     #     self.train_batch_size = 2048
+    if self.electric_objective:
+      self.two_tower_generator = True  # electric requires a two-tower generator
 
     # passed-in-arguments override (for example) debug-mode defaults
     self.update(kwargs)
