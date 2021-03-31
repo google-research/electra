@@ -112,10 +112,17 @@ def whitespace_tokenize(text):
 class FullTokenizer(object):
   """Runs end-to-end tokenziation."""
 
-  def __init__(self, vocab_file, do_lower_case=True):
+  def __init__(self, vocab_file, do_lower_case=True, strip_accents=True):
+    """Constructs a FullTokenizer.
+
+    Args:
+      vocab_file: The vocabulary file.
+      do_lower_case: Whether to lower case the input.
+      strip_accents: Whether to strip the accents.
+    """
     self.vocab = load_vocab(vocab_file)
     self.inv_vocab = {v: k for k, v in self.vocab.items()}
-    self.basic_tokenizer = BasicTokenizer(do_lower_case=do_lower_case)
+    self.basic_tokenizer = BasicTokenizer(do_lower_case=do_lower_case, strip_accents=strip_accents)
     self.wordpiece_tokenizer = WordpieceTokenizer(vocab=self.vocab)
 
   def tokenize(self, text):
@@ -136,13 +143,15 @@ class FullTokenizer(object):
 class BasicTokenizer(object):
   """Runs basic tokenization (punctuation splitting, lower casing, etc.)."""
 
-  def __init__(self, do_lower_case=True):
+  def __init__(self, do_lower_case=True, strip_accents=True):
     """Constructs a BasicTokenizer.
 
     Args:
       do_lower_case: Whether to lower case the input.
+      strip_accents: Whether to strip the accents.
     """
     self.do_lower_case = do_lower_case
+    self.strip_accents = strip_accents
 
   def tokenize(self, text):
     """Tokenizes a piece of text."""
@@ -162,7 +171,8 @@ class BasicTokenizer(object):
     for token in orig_tokens:
       if self.do_lower_case:
         token = token.lower()
-        token = self._run_strip_accents(token)
+        if self.strip_accents:
+            token = self._run_strip_accents(token)
       split_tokens.extend(self._run_split_on_punc(token))
 
     output_tokens = whitespace_tokenize(" ".join(split_tokens))
