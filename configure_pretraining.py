@@ -46,6 +46,7 @@ class PretrainingConfig(object):
     self.num_warmup_steps = 10000
 
     # training settings
+    self.init_checkpoint = None
     self.iterations_per_loop = 200
     self.save_checkpoints_steps = 1000
     self.num_train_steps = 1000000
