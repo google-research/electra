@@ -437,3 +437,23 @@ class STS(RegressionTask):
       examples += self._load_glue(
           lines, split, -3, -2, -1, True, len(examples), True)
     return examples
+
+class StandardTSV(ClassificationTask):
+  def __init__(self, config: configure_finetuning.FinetuningConfig,
+               task_name: str, task_config: dict, tokenizer):
+    super(StandardTSV, self).__init__(config, task_name, tokenizer,
+                               task_config["labels"])
+    self.task_config = task_config
+
+  def get_examples(self, split):
+    return self._create_examples(read_tsv(
+        os.path.join(self.config.raw_data_dir(self.name), split + ".tsv"),
+        quotechar="\"",
+        max_lines=100 if self.config.debug else None), split)
+
+  def _create_examples(self, lines, split):
+    text_column_2 = self.task_config.get("text_column_2", None)
+    header = self.task_config.get("header", False)
+    return self._load_glue(lines, split, self.task_config["text_column"],
+                           text_column_2, self.task_config["label_column"],
+                           skip_first_line=header)

@@ -309,11 +309,21 @@ def main():
                       help="The name of the model being fine-tuned.")
   parser.add_argument("--hparams", default="{}",
                       help="JSON dict of model hyperparameters.")
+  parser.add_argument("--task-config", default="{}",
+                      help="JSON dict of custom fine-tuning task parameters")
   args = parser.parse_args()
   if args.hparams.endswith(".json"):
     hparams = utils.load_json(args.hparams)
   else:
     hparams = json.loads(args.hparams)
+
+  if args.task_config.endswith(".json"):
+    task_config = utils.load_json(args.task_config)
+  else:
+    task_config = json.loads(args.task_config)
+  if len(task_config.keys()) > 0:
+    hparams["tasks"] = task_config
+
   tf.logging.set_verbosity(tf.logging.ERROR)
   run_finetuning(configure_finetuning.FinetuningConfig(
       args.model_name, args.data_dir, **hparams))
