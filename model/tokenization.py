@@ -122,15 +122,17 @@ class FullTokenizer(object):
     """
     self.vocab = load_vocab(vocab_file)
     self.inv_vocab = {v: k for k, v in self.vocab.items()}
-    self.basic_tokenizer = BasicTokenizer(do_lower_case=do_lower_case, strip_accents=strip_accents)
-    self.wordpiece_tokenizer = WordpieceTokenizer(vocab=self.vocab)
+    # self.basic_tokenizer = BasicTokenizer(do_lower_case=do_lower_case, strip_accents=strip_accents)
+    # self.wordpiece_tokenizer = WordpieceTokenizer(vocab=self.vocab)
+    self.custom_tokenizer = CharTokenizer(vocab=self.vocab)
 
   def tokenize(self, text):
     split_tokens = []
-    for token in self.basic_tokenizer.tokenize(text):
-      for sub_token in self.wordpiece_tokenizer.tokenize(token):
-        split_tokens.append(sub_token)
-
+    # for token in self.basic_tokenizer.tokenize(text):
+    #   for sub_token in self.wordpiece_tokenizer.tokenize(token):
+    #     split_tokens.append(sub_token)
+    for token in self.custom_tokenizer.tokenize(text):
+      split_tokens.append(token)
     return split_tokens
 
   def convert_tokens_to_ids(self, tokens):
@@ -318,6 +320,35 @@ class WordpieceTokenizer(object):
       else:
         output_tokens.extend(sub_tokens)
     return output_tokens
+
+
+class CharTokenizer(object):
+  """Runs Custom tokenziation."""
+  def __init__(self, vocab, unk_token="[UNK]", max_input_chars_per_word=200):
+    self.vocab = vocab
+    self.unk_token = unk_token
+    self.max_input_chars_per_word = max_input_chars_per_word
+
+  def tokenize(self,text):
+    """Tokenizes a sequence of text into its characters.
+
+    This splits a sequence into its characters and replaces unknown protiens with the unknown token.
+
+    For example:
+      input = "EVQLVESGGVVVQ"
+      output = ["E", "V", "Q", "L", "V", "E", "S", "G", "G", "V", "V", "V", "Q"]
+
+    Args:
+      text: A sequence.
+
+    Returns:
+      A list of characters.
+    """
+    chars = list(text)
+    for i in range(len(chars)):
+      if chars[i] not in self.vocab:
+        chars[i] = self.unk_token
+    return chars
 
 
 def _is_whitespace(char):
